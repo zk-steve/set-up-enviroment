@@ -30,7 +30,6 @@ services:
       --bind-random-ports=false
       --bind-any-host=false
       --bind-random-subdomains=false
-      --bind-random-subdomains=false
       --domain=dev.nftal.io
     network_mode: host
     restart: always
