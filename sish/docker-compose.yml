@@ -21,7 +21,7 @@ services:
       - ./ssl:/ssl
     command: |
       --ssh-address=:22222
-      --http-address=:9999
+      --http-address=localhost:9999
       --https-address=:10000
       --https=true
       --https-certificate-directory=/ssl
@@ -29,6 +29,7 @@ services:
       --private-key-location=/keys/ssh_key
       --bind-random-ports=false
       --tcp-aliases
+      --banned-aliases=api
       --bind-any-host=false
       --bind-random-subdomains=false
       --domain=dev.nftal.io
