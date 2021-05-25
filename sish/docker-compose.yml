@@ -33,6 +33,6 @@ services:
       --bind-any-host=false
       --bind-random-subdomains=false
       --redirect-root=false
-      --domain=dev.nftal.io
+      --domain=dev.dev.nftal.io
     network_mode: host
     restart: always
