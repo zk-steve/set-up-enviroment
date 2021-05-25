@@ -28,6 +28,7 @@ services:
       --authentication-keys-directory=/pubkeys
       --private-key-location=/keys/ssh_key
       --bind-random-ports=false
+      --tcp-aliases
       --bind-any-host=false
       --bind-random-subdomains=false
       --domain=dev.nftal.io
