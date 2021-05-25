@@ -21,8 +21,8 @@ services:
       - ./ssl:/ssl
     command: |
       --ssh-address=:22222
-      --http-address=localhost:9999
-      --https-address=:10000
+      --http-address=:80
+      --https-address=:443
       --https=true
       --https-certificate-directory=/ssl
       --authentication-keys-directory=/pubkeys
