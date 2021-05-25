@@ -34,5 +34,8 @@ services:
       --bind-random-subdomains=false
       --redirect-root=false
       --domain=dev.nftal.io
+      --force-requested-aliases
+      --force-requested-ports
+      --force-requested-subdomains
     network_mode: host
     restart: always
