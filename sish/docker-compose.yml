@@ -32,6 +32,7 @@ services:
       --banned-aliases=api
       --bind-any-host=false
       --bind-random-subdomains=false
+      --redirect-root=false
       --domain=dev.nftal.io
     network_mode: host
     restart: always
