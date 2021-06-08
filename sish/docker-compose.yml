@@ -26,6 +26,7 @@ services:
       --https=true
       --https-certificate-directory=/ssl
       --authentication-keys-directory=/pubkeys
+      --idle-connection-timeout=60s
       --private-key-location=/keys/ssh_key
       --bind-random-ports=false
       --tcp-aliases
