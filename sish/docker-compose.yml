@@ -43,5 +43,6 @@ services:
       --idle-connection-timeout=30m
       --cleanup-unbound-timeout=30m
       --force-requested-subdomains
+      --debug
     network_mode: host
     restart: always
