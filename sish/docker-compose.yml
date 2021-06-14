@@ -38,10 +38,10 @@ services:
       --domain=dev.nftal.io
       --force-requested-aliases
       --force-requested-ports
-      --ping-client-interval=1h
-      --ping-client-timeout=30m
-      --idle-connection-timeout=30m
-      --cleanup-unbound-timeout=30m
+      --ping-client-interval=30
+      --ping-client-timeout=30
+      --idle-connection-timeout=30
+      --cleanup-unbound-timeout=30
       --force-requested-subdomains
       --debug
     network_mode: host
