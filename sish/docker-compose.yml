@@ -26,8 +26,6 @@ services:
       --https=true
       --https-certificate-directory=/ssl
       --authentication-keys-directory=/pubkeys
-      --idle-connection=true
-      --cleanup-unbound=true
       --private-key-location=/keys/ssh_key
       --bind-random-ports=false
       --tcp-aliases
@@ -38,11 +36,9 @@ services:
       --domain=dev.nftal.io
       --force-requested-aliases
       --force-requested-ports
-      --ping-client-interval=30
-      --ping-client-timeout=30
-      --idle-connection-timeout=30
-      --cleanup-unbound-timeout=30
+      --ping-client-interval=1m
+      --ping-client-timeout=2m
+      --idle-connection-timeout=30s
       --force-requested-subdomains
-      --debug
     network_mode: host
     restart: always
