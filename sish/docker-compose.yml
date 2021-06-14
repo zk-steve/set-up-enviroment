@@ -26,8 +26,8 @@ services:
       --https=true
       --https-certificate-directory=/ssl
       --authentication-keys-directory=/pubkeys
-      --idle-connection=false
-      --cleanup-unbound=false
+      --idle-connection=true
+      --cleanup-unbound=true
       --private-key-location=/keys/ssh_key
       --bind-random-ports=false
       --tcp-aliases
