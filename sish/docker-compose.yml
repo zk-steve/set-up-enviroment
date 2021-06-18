@@ -9,7 +9,7 @@ services:
 #      - ./letsencrypt:/etc/letsencrypt
 #      - ./le-config.yml:/etc/dnsrobocert/config.yml
 #    restart: always
-  sish:
+  sish-azure:
     image: antoniomika/sish:latest
     container_name: sish
 #    depends_on:
