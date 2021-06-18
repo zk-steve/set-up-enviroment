@@ -9,9 +9,9 @@ services:
 #      - ./letsencrypt:/etc/letsencrypt
 #      - ./le-config.yml:/etc/dnsrobocert/config.yml
 #    restart: always
-  sish:
+  sish-azure:
     image: antoniomika/sish:latest
-    container_name: sish
+    container_name: sish-azure
 #    depends_on:
 #      - letsencrypt
     volumes:

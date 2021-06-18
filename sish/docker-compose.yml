@@ -11,7 +11,7 @@ services:
 #    restart: always
   sish:
     image: antoniomika/sish:latest
-    container_name: sish-azure
+    container_name: sish
 #    depends_on:
 #      - letsencrypt
     volumes:
