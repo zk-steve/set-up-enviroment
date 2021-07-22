@@ -10,7 +10,7 @@ services:
 #      - ./le-config.yml:/etc/dnsrobocert/config.yml
 #    restart: always
   sish-azure:
-    image: sonntuet1997/sish:latest:latest
+    image: sonntuet1997/sish:latest
     container_name: sish-azure
 #    depends_on:
 #      - letsencrypt
