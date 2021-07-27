@@ -7,4 +7,4 @@ services:
       - /bin/bash
       - -c
       - |
-        ssh -oStrictHostKeyChecking=no -p 33333 -R 8080:192.168.168.2:8080 dev.nftal.io
+        ssh -oStrictHostKeyChecking=no -p 33333 -R 8080:172.16.10.49:80 dev.nftal.io
