@@ -38,7 +38,7 @@ services:
       --force-requested-ports
       --ping-client-interval=1m
       --ping-client-timeout=2m
-      --idle-connection-timeout=20s
+      --idle-connection-timeout=40s
       --force-requested-subdomains
     network_mode: host
     restart: always
