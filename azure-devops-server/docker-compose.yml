@@ -8,3 +8,4 @@ services:
       - -c
       - |
         ssh -oStrictHostKeyChecking=no -p 33333 -R 8080:172.16.10.49:80 dev.nftal.io
+ 
