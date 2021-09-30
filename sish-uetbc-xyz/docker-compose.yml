@@ -19,9 +19,9 @@ services:
       - ./keys:/keys
       - ./ssl:/ssl
     command: |
-      --ssh-address=:33333
-      --http-address=:8080
-      --https-address=:4443
+      --ssh-address=:22222
+      --http-address=:80
+      --https-address=:443
       --https=true
       --https-certificate-directory=/ssl
       --authentication-keys-directory=/pubkeys
