@@ -1,8 +1,12 @@
 version: "3"
+networks:
+  uetbccode:
 services:
   azure-tunnel:
     image: kroniak/ssh-client
     restart: "always"
+    networks:
+      - uetbccode
     command:
       - /bin/bash
       - -c
@@ -11,5 +15,7 @@ services:
   vs:
     image: gitpod/openvscode-server
     restart: "always"
+    networks:
+      - uetbccode
     volumes:
       - ~/workspace:/home/workspace:cached
