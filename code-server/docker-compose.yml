@@ -17,5 +17,7 @@ services:
     restart: "always"
     networks:
       - uetbccode
+    environment:
+      - DOCKER_HOST=tcp://172.16.10.47:2375
     volumes:
       - ~/workspace:/home/workspace:cached
