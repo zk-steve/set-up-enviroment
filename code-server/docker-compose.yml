@@ -11,12 +11,14 @@ services:
       - /bin/bash
       - -c
       - |
-        ssh -oStrictHostKeyChecking=no -p 22222 -R code:80:vs:3000 uetbc.xyz
+        ssh -oStrictHostKeyChecking=no -p 22222 -R vcnkzdnfkwienonwxms:80:vs:3000 uetbc.xyz
   vs:
     image: gitpod/openvscode-server
     restart: "always"
     networks:
       - uetbccode
+    ports:
+      - 30000:3000
     environment:
       - DOCKER_HOST=tcp://172.16.10.47:2375
     volumes:
