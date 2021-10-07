@@ -3,7 +3,7 @@ networks:
   commento:
 services:
   db:
-    image: postgres
+    image: postgres:11.8
     environment:
       POSTGRES_DB: commento
       POSTGRES_USER: postgres
@@ -18,7 +18,7 @@ services:
     environment:
       COMMENTO_ORIGIN: https://commento.uetbc.xyz
       COMMENTO_PORT: 80
-      COMMENTO_POSTGRES: postgres://postgres:postgres@db:5432/defaultdb?sslmode=disable
+      COMMENTO_POSTGRES: postgres://postgres:postgres@db:5432/commento?sslmode=disable
     restart: "always"
     depends_on:
       - db
