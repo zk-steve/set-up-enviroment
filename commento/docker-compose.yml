@@ -14,7 +14,7 @@ services:
     networks:
       - commento
   commento:
-    image: registry.gitlab.com/commento/commento:latest
+    image: caroga/commentoplusplus:latest
     environment:
       COMMENTO_ORIGIN: https://commento.uetbc.xyz
       COMMENTO_PORT: 80
