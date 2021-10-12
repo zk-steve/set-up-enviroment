@@ -38,10 +38,9 @@ RUN sh get-docker.sh
 RUN wget https://golang.org/dl/go1.17.2.linux-amd64.tar.gz && rm -rf /usr/local/go && tar -C /usr/local -xzf go1.17.2.linux-amd64.tar.gz
 ENV PATH=$PATH:/usr/local/go/bin
 
-WORKDIR /zsh-autosuggestions
-ADD ZSH_VERSIONS /zsh-autosuggestions/ZSH_VERSIONS
-ADD install_test_zsh.sh /zsh-autosuggestions/install_test_zsh.sh
-RUN ./install_test_zsh.sh
+RUN chsh -s $(which zsh)
+RUN git clone git://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+RUN echo "source ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" >> /home/workspace/.zshrc
 
 USER $USERNAME
 
