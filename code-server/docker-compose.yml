@@ -13,7 +13,7 @@ services:
       - |
         ssh -oStrictHostKeyChecking=no -p 22222 -R vcnkzdnfkwienonwxms:80:vs:3000 uetbc.xyz
   vs:
-    image: gitpod/openvscode-server
+    image: myvscode
     restart: "always"
     networks:
       - uetbccode
