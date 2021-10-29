@@ -42,5 +42,7 @@ services:
       --https-ondemand-certificate=true
       --https-ondemand-certificate-accept-terms=true
       --https-ondemand-certificate-email=sonntuet1997@gmail.com
+      --port-bind-range=0,25,1024-65535
+
     network_mode: host
     restart: always

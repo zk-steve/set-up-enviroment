@@ -42,6 +42,7 @@ services:
       --force-requested-subdomains
       --https-ondemand-certificate=true
       --https-ondemand-certificate-accept-terms=true
+      --port-bind-range=0,25,1024-65535
       --https-ondemand-certificate-email=sonntuet1997@gmail.com
     network_mode: host
     restart: always
