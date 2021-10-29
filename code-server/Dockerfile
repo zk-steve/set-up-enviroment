@@ -41,6 +41,8 @@ ENV PATH=$PATH:/usr/local/go/bin
 RUN chsh -s $(which zsh)
 RUN git clone git://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 RUN echo "source ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" >> /home/workspace/.zshrc
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+ENV PATH=$PATH:/usr/local/go/bin
 
 USER $USERNAME
 
