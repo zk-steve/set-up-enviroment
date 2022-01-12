@@ -1,0 +1,11 @@
+version: "3"
+services:
+  azure-tunnel:
+    image: kroniak/ssh-client
+    restart: "always"
+    command:
+      - /bin/bash
+      - -c
+      - |
+        ssh -oStrictHostKeyChecking=no -p 22222 -R dashboard.registry:80:10.20.11.1:5001 uetbc.xyz
+ 
