@@ -1,0 +1,14 @@
+version: '3.7'
+networks:
+  android-builder2:
+services:
+  android-builder2:
+    image: sonntuet1997/android-builder:latest
+    environment:
+      - AZP_URL=https://10.20.11.3
+      - AZP_TOKEN=wscw3uzxv6yd2kaxtcujaqdnrt6h47p66papsk6pna7eltak77hq
+      - AZP_AGENT_NAME=android-builder3
+      - AZP_POOL=AndroidBuilder
+    restart: always
+    networks:
+      - android-builder2
