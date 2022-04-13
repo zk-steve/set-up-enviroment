@@ -43,7 +43,7 @@ services:
       - /bin/bash
       - -c
       - |
-        ssh -oStrictHostKeyChecking=no -p 22222 -R sonar:80:sonarqube:9000 dev.nftal.io
+        ssh -oStrictHostKeyChecking=no -p 22222 -R sonar:80:sonarqube:9000 uetbc.xyz auto-close=true
 volumes:
   sonarqube_data:
   sonarqube_extensions:

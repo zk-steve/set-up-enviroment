@@ -31,14 +31,14 @@ cleanup() {
     # If the agent has some running jobs, the configuration removal process will fail.
     # So, give it some time to finish the job.
     while true; do
-      ./config.sh remove --unattended --auth PAT --token $(cat "$AZP_TOKEN_FILE") && break
+      ./config.sh remove --unattended --auth PAT --token $(cat "$AZP_TOKEN") && break
 
       echo "Retrying in 30 seconds..."
       sleep 30
     done
   fi
 }
-
+cleanup
 print_header() {
   lightcyan='\033[1;36m'
   nocolor='\033[0m'

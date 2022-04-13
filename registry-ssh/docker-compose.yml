@@ -1,11 +1,11 @@
 version: "3"
 services:
-  azure-tunnel:
+  registry-tunnel:
     image: kroniak/ssh-client
     restart: "always"
     command:
       - /bin/bash
       - -c
       - |
-        ssh -oStrictHostKeyChecking=no -p 22222 -R registry:80:10.20.11.1:5000 uetbc.xyz
+        ssh -oStrictHostKeyChecking=no -p 22222 -R registry:80:10.20.11.1:5000 uetbc.xyz auto-close=true
  
