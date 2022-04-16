@@ -24,7 +24,15 @@ fi
 
 export AGENT_ALLOW_RUNASROOT="1"
 
+print_header() {
+  lightcyan='\033[1;36m'
+  nocolor='\033[0m'
+  echo -e "${lightcyan}$1${nocolor}"
+}
+
 cleanup() {
+  print_header "Cleanup...."
+
   if [ -e config.sh ]; then
     print_header "Cleanup. Removing Azure Pipelines agent..."
 
@@ -38,13 +46,6 @@ cleanup() {
     done
   fi
 }
-
-print_header() {
-  lightcyan='\033[1;36m'
-  nocolor='\033[0m'
-  echo -e "${lightcyan}$1${nocolor}"
-}
-
 # Let the agent ignore the token env variables
 export VSO_AGENT_IGNORE=AZP_TOKEN,AZP_TOKEN_FILE
 
@@ -57,7 +58,7 @@ AZP_AGENT_PACKAGES=$(curl -LsS \
     "$AZP_URL/_apis/distributedtask/packages/agent?platform=$TARGETARCH&top=1")
 
 AZP_AGENT_PACKAGE_LATEST_URL=$(echo "$AZP_AGENT_PACKAGES" | jq -r '.value[0].downloadUrl')
-print_header "$AZP_AGENT_PACKAGE_LATEST_URL"
+print_header "$AZP_AGENT_PACKxGE_LATEST_URL"
 
 if [ -z "$AZP_AGENT_PACKAGE_LATEST_URL" -o "$AZP_AGENT_PACKAGE_LATEST_URL" == "null" ]; then
   echo 1>&2 "error: could not determine a matching Azure Pipelines agent"

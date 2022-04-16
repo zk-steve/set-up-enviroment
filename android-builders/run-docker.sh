@@ -1,92 +1,98 @@
 #!/bin/bash
+set -e
 
-function delay {
-    time=${1:-1}
-    if [ -x "$(command -v sleep)" ]; then
-        sleep $time >/dev/null
-    elif [ -x "$(command -v ping)" ]; then
-        ping -n $time 127.0.0.1 >nul
-    else
-        count=0
-
-        while [[ $count != $[$time*25000] ]]; do
-            echo "sleep" >/dev/null
-            count=$[$count+1]
-        done
-    fi
-}
-
-# Validate not sudo
-user_id=`id -u`
-if [ $user_id -eq 0 -a -z "$AGENT_ALLOW_RUNASROOT" ]; then
-    echo "Must not run interactively with sudo"
-    exit 1
+if [ -z "$AZP_URL" ]; then
+  echo 1>&2 "error: missing AZP_URL environment variable"
+  exit 1
 fi
 
-# Change directory to the script root directory
-# https://stackoverflow.com/questions/59895/getting-the-source-directory-of-a-bash-script-from-within
-SOURCE="${BASH_SOURCE[0]}"
-while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
-  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-  SOURCE="$(readlink "$SOURCE")"
-  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
-done
-DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+if [ -z "$AZP_TOKEN_FILE" ]; then
+  if [ -z "$AZP_TOKEN" ]; then
+    echo 1>&2 "error: missing AZP_TOKEN environment variable"
+    exit 1
+  fi
 
-# Do not "cd $DIR". For localRun, the current directory is expected to be the repo location on disk.
+  AZP_TOKEN_FILE=/azp/.token
+  echo -n $AZP_TOKEN > "$AZP_TOKEN_FILE"
+fi
 
-# Run
-shopt -s nocasematch
+unset AZP_TOKEN
 
-# Determining if the "--once" flag was passed
-ONCE=false
-for a in $*; do
-    if [[ "$a" == "--once" ]]; then
-        ONCE=true
-    fi
-done
+if [ -n "$AZP_WORK" ]; then
+  mkdir -p "$AZP_WORK"
+fi
 
-FIRST_ARG=$1
-ARGUMENTS=$*
+export AGENT_ALLOW_RUNASROOT="1"
 
-# Function process arguments, start the agent with the correct flags and handle exit codes on updating
-function runAgent {
-    if [[ "$FIRST_ARG" == "localRun" ]]; then
-        "$DIR"/bin/Agent.Listener $ARGUMENTS
-    else
-        if [[ "$ONCE" = true ]]; then
-            "$DIR"/bin/Agent.Listener run $ARGUMENTS
-        else
-            echo "Starting Agent listener with startup type: service - to prevent running of an agent in a separate process after self-update"
-            "$DIR"/bin/Agent.Listener run --startuptype service $ARGUMENTS
-        fi
-
-        # Return code 3 or 4 means the agent received an update message.
-        # Sleep at least 5 seconds (to allow the update process to start) and
-        # at most 20 seconds (to allow it to finish) then run the new agent
-        # again.
-        returnCode=$?
-        echo "Agent exit code $returnCode"
-
-        if [[ $returnCode == 3 || $returnCode == 4 ]]; then
-            delay 5
-
-            retry=0
-            while [[ $retry != 15 ]] && [ ! -x "$DIR"/bin/Agent.Listener ]; do
-                delay 1
-                retry=$[retry+1]
-            done
-
-            if [ ! -x "$DIR"/bin/Agent.Listener ]; then
-                echo "Failed to update within 20 seconds." >&2
-                exit 1
-            fi
-
-            runAgent
-        else
-            exit $returnCode
-        fi
-    fi
+print_header() {
+  lightcyan='\033[1;36m'
+  nocolor='\033[0m'
+  echo -e "${lightcyan}$1${nocolor}"
 }
 
-runAgent
+cleanup() {
+  print_header "Cleanup...."
+
+  if [ -e config.sh ]; then
+    print_header "Cleanup. Removing Azure Pipelines agent..."
+
+    # If the agent has some running jobs, the configuration removal process will fail.
+    # So, give it some time to finish the job.
+    while true; do
+      ./config.sh remove --unattended --auth PAT --token $(cat "$AZP_TOKEN_FILE") && break
+
+      echo "Retrying in 30 seconds..."
+      sleep 30
+    done
+  fi
+}
+# Let the agent ignore the token env variables
+export VSO_AGENT_IGNORE=AZP_TOKEN,AZP_TOKEN_FILE
+
+print_header "1. Determining matching Azure Pipelines agent..."
+
+AZP_AGENT_PACKAGES=$(curl -LsS \
+    --insecure \
+    -u user:$(cat "$AZP_TOKEN_FILE") \
+    -H 'Accept:application/json;' \
+    "$AZP_URL/_apis/distributedtask/packages/agent?platform=$TARGETARCH&top=1")
+
+AZP_AGENT_PACKAGE_LATEST_URL=$(echo "$AZP_AGENT_PACKAGES" | jq -r '.value[0].downloadUrl')
+print_header "$AZP_AGENT_PACKxGE_LATEST_URL"
+
+if [ -z "$AZP_AGENT_PACKAGE_LATEST_URL" -o "$AZP_AGENT_PACKAGE_LATEST_URL" == "null" ]; then
+  echo 1>&2 "error: could not determine a matching Azure Pipelines agent"
+  echo 1>&2 "check that account '$AZP_URL' is correct and the token is valid for that account"
+  exit 1
+fi
+
+print_header "2. Downloading and extracting Azure Pipelines agent..."
+
+curl -LsS --insecure $AZP_AGENT_PACKAGE_LATEST_URL | tar -xz & wait $!
+
+source ./env.sh
+
+print_header "3. Configuring Azure Pipelines agent..."
+
+./config.sh --unattended \
+  --agent "${AZP_AGENT_NAME:-$(hostname)}" \
+  --url "$AZP_URL" \
+  --auth PAT \
+  --token $(cat "$AZP_TOKEN_FILE") \
+  --pool "${AZP_POOL:-Default}" \
+  --work "${AZP_WORK:-_work}" \
+  --replace \
+  --sslskipcertvalidation \
+  --acceptTeeEula & wait $!
+
+print_header "4. Running Azure Pipelines agent..."
+
+trap 'cleanup; exit 0' EXIT
+trap 'cleanup; exit 130' INT
+trap 'cleanup; exit 143' TERM
+
+chmod +x ./run-docker.sh
+
+# To be aware of TERM and INT signals call run.sh
+# Running it with the --once flag at the end will shut down the agent after the build is executed
+./run-docker.sh "$@" & wait $!
