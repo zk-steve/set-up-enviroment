@@ -1,0 +1,56 @@
+addLocal: 'true'
+additionalTrustedCAs: false
+antiAffinity: preferred
+auditLog:
+  destination: sidecar
+  hostPath: /var/log/rancher/audit/
+  level: 0
+  maxAge: 1
+  maxBackup: 1
+  maxSize: 100
+bootstrapPassword: ''
+busyboxImage: busybox
+certmanager:
+  version: ''
+customLogos:
+  accessMode: ReadWriteOnce
+  enabled: false
+  size: 1Gi
+  volumeKind: persistentVolumeClaim
+  volumeSubpaths:
+    emberUi: ember
+    vueUi: vue
+debug: false
+imagePullSecrets: []
+ingress:
+  enabled: false
+  extraAnnotations: {}
+  includeDefaultExtraAnnotations: true
+  tls:
+    secretName: tls-rancher-ingress
+    source: secret
+letsEncrypt:
+  environment: production
+  ingress:
+    class: ''
+noProxy: 127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.svc,.cluster.local
+postDelete:
+  enabled: true
+  ignoreTimeoutError: false
+  image:
+    repository: rancher/shell
+    tag: v0.1.16
+  namespaceList:
+    - cattle-fleet-system
+    - cattle-system
+    - rancher-operator-system
+  timeout: 120
+privateCA: false
+rancherImage: rancher/rancher
+replicas: 1
+resources: {}
+restrictedAdmin: false
+systemDefaultRegistry: ''
+tls: external
+topologyKey: kubernetes.io/hostname
+useBundledSystemChart: false

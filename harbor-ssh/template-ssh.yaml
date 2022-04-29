@@ -11,14 +11,14 @@ livenessProbe:
   failureThreshold: 1
   periodSeconds: 10
 service:
-  name: next-ssh-tunnel
+  name: rancher-ssh-tunnel
 services:
   sish:
     domain: uetbc.xyz
     port: 22222
     request:
-      domain: harbor
+      domain: rancher
       port: 80
     from:
-      domain: harbor-portal
+      domain: rancher
       port: 80
