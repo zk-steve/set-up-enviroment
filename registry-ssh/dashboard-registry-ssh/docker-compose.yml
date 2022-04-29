@@ -7,5 +7,4 @@ services:
       - /bin/bash
       - -c
       - |
-        ssh -oStrictHostKeyChecking=no -p 22222 -R dashboard.registry:80:10.20.11.1:5001 uetbc.xyz auto-close=true
- 
+        ssh -oStrictHostKeyChecking=no -p 22222 -R dashboard.registry.uetbc.xyz:80:10.20.11.1:5001 uetbc.xyz auto-close=true

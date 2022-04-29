@@ -1,11 +1,11 @@
 version: "3"
 services:
-  registry-tunnel:
+  rancher-tunnel:
     image: kroniak/ssh-client
     restart: "always"
     command:
       - /bin/bash
       - -c
       - |
-        ssh -oStrictHostKeyChecking=no -p 22222 -R registry:80:10.8.0.10:30500 uetbc.xyz auto-close=true
+        ssh -oStrictHostKeyChecking=no -p 22222 -R harbor:80:10.8.0.10:30002 uetbc.xyz auto-close=true
  

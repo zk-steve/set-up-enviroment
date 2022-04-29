@@ -1,0 +1,75 @@
+email:
+  from: "account@gmail.com"
+  name: "Name"
+
+  smtp:
+    enabled: true
+    address: "smtp.gmail.com"
+    port: 587,
+    domain: "smtp.gmail.com"
+    user_name: "account@gmail.com"
+    password: "two-factor-password"
+    authentication: "login"
+    enable_starttls_auto: true
+    openssl_verify_mode:  "none"
+gravatar:
+  enabled: false
+delete:
+  enabled: true
+  contributors: true
+  garbage_collector:
+    enabled: true
+    older_than: 30
+    keep_latest: 5
+    tag: ""
+ldap:
+  enabled: false
+first_user_admin:
+  enabled: true
+check_ssl_usage:
+  enabled: false
+oauth:
+  local_login:
+    enabled: true
+
+  github:
+    enabled: false
+    client_id: ""
+    client_secret: ""
+    organization: ""
+    team: ""
+    domain: ""
+anonymous_browsing:
+  enabled: true
+display_name:
+  enabled: false
+user_permission:
+  change_visibility:
+    enabled: true
+  create_team:
+    enabled: true
+  manage_team:
+    enabled: true
+  create_namespace:
+    enabled: true
+  manage_namespace:
+    enabled: true
+  create_webhook:
+    enabled: true
+  manage_webhook:
+    enabled: true
+  push_images:
+    policy: allow-teams
+
+background:
+  registry:
+    enabled: true
+  sync:
+    enabled: true
+    strategy: initial
+db:
+  host:
+  port:
+  username:
+  password:
+  database:
