@@ -1,0 +1,27 @@
+version: "3.8"
+networks:
+  vm:
+    name: vm
+
+services:
+  sonnt2-vm:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - RELEASE_TAG=openvscode-server-v1.67.0
+        - GO_VERSION=go1.18.2.linux-amd64
+    restart: "always"
+    networks:
+      - vm
+    ports:
+       - "14004:22"
+       - "14005:3000"
+    runtime: sysbox-runc
+    command:
+      - /bin/bash
+      - -c
+      - |
+        /home/admin/openvscode-server-v1.67.0-linux-x64/bin/openvscode-server --host 0.0.0.0 --connection-token=BcxGkTzcw4
+    volumes:
+      - ~/vm/sonnt2:/home/admin/codes
