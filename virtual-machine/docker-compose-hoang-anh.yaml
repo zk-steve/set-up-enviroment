@@ -18,10 +18,6 @@ services:
        - "14008:22"
        - "14009:3000"
     runtime: sysbox-runc
-    command:
-      - /bin/bash
-      - -c
-      - |
-        /home/admin/openvscode-server-v1.67.0-linux-x64/bin/openvscode-server --host 0.0.0.0 --connection-token=9yuQfOLbYH
     volumes:
+      - ./hoang-anh-token.txt:/home/admin/.secret
       - ~/vm/hoang-anh:/home/admin/codes

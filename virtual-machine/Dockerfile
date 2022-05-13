@@ -26,13 +26,16 @@ WORKDIR /home/admin
 RUN wget https://github.com/gitpod-io/openvscode-server/releases/download/${RELEASE_TAG}/${RELEASE_TAG}-linux-x64.tar.gz && \
     tar -xzf ${RELEASE_TAG}-linux-x64.tar.gz && \
     rm -f ${RELEASE_TAG}-linux-x64.tar.gz
-RUN mkdir codes
+
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 ENV EDITOR=code
 ENV VISUAL=code
 ENV GIT_EDITOR="code --wait"
 ENV OPENVSCODE_SERVER_ROOT=/home/admin/${RELEASE_TAG}-linux-x64
-#ENTRYPOINT sleep 10000
+USER root
+COPY open-vs-code.service open-vs-code.sh /etc/systemd/system/
+RUN systemctl enable open-vs-code.service
+ENTRYPOINT ["/sbin/init", "--log-level=err"]
 
-ENTRYPOINT [""]
+#CMD ["${OPENVSCODE_SERVER_ROOT}/server.sh"]
