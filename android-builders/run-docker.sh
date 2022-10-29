@@ -51,13 +51,14 @@ export VSO_AGENT_IGNORE=AZP_TOKEN,AZP_TOKEN_FILE
 
 print_header "1. Determining matching Azure Pipelines agent..."
 
-AZP_AGENT_PACKAGES=$(curl -LsS \
-    --insecure \
-    -u user:$(cat "$AZP_TOKEN_FILE") \
-    -H 'Accept:application/json;' \
-    "$AZP_URL/_apis/distributedtask/packages/agent?platform=$TARGETARCH&top=1")
+# AZP_AGENT_PACKAGES=$(curl -LsS \
+#     --insecure \
+#     -u user:$(cat "$AZP_TOKEN_FILE") \
+#     -H 'Accept:application/json;' \
+#     "$AZP_URL/_apis/distributedtask/packages/agent?platform=$TARGETARCH&top=1")
 
-AZP_AGENT_PACKAGE_LATEST_URL=$(echo "$AZP_AGENT_PACKAGES" | jq -r '.value[0].downloadUrl')
+# AZP_AGENT_PACKAGE_LATEST_URL=$(echo "$AZP_AGENT_PACKAGES" | jq -r '.value[0].downloadUrl')
+AZP_AGENT_PACKAGE_LATEST_URL=$(echo "$AZP_URL/_apis/public/distributedtask/downloads/agents/vsts-agent-linux-x64-2.195.2.tar.gz") 
 print_header "$AZP_AGENT_PACKxGE_LATEST_URL"
 
 if [ -z "$AZP_AGENT_PACKAGE_LATEST_URL" -o "$AZP_AGENT_PACKAGE_LATEST_URL" == "null" ]; then

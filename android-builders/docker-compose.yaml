@@ -2,13 +2,13 @@ version: '3.7'
 
 services:
   android-builder:
-    image: sonntuet1997/android-builder:latest
+    # image: sonntuet1997/android-builder:latest
     build:
       context: .
       dockerfile: Dockerfile
     environment:
-      - AZP_URL=https://10.20.11.3
-      - AZP_TOKEN=wscw3uzxv6yd2kaxtcujaqdnrt6h47p66papsk6pna7eltak77hq
-      - AZP_AGENT_NAME=android-builder2
+      - AZP_URL=https://10.10.10.9
+      - AZP_TOKEN=d56n7yha7sxzpvayjulyee65tfglcvz6avie4joendwl7iya2lqq
+      - AZP_AGENT_NAME=android-builder1
       - AZP_POOL=AndroidBuilder
     restart: always

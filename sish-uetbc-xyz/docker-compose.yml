@@ -10,7 +10,7 @@ services:
 #      - ./le-config.yml:/etc/dnsrobocert/config.yml
 #    restart: always
   sish:
-    image: sonntuet1997/sish:latest
+    image: sonntuet1997/sish-new:main
 #    depends_on:
 #      - letsencrypt
     volumes:
@@ -23,16 +23,13 @@ services:
       --http-address=:80
       --https-address=:443
       --https=true
-      --https-certificate-directory=/ssl
-      --authentication-keys-directory=/pubkeys
-      --private-key-location=/keys/ssh_key
       --bind-random-ports=false
       --tcp-aliases
       --banned-aliases=api
       --bind-any-host=false
       --bind-random-subdomains=false
       --redirect-root=true
-      --domain=uetbc.xyz
+      --domain=uetblockchain.xyz
       --force-requested-aliases
       --force-requested-ports
       --ping-client-interval=1m
@@ -43,6 +40,9 @@ services:
       --https-ondemand-certificate-accept-terms=true
       --https-ondemand-certificate-email=sonntuet1997@gmail.com
       --port-bind-range=0,25,1024-65535
-
+      --authentication=false
+      --https-certificate-directory=/ssl
+      --authentication-keys-directory=/pubkeys
+      --private-keys-directory=/keys/ssh_key
     network_mode: host
     restart: always

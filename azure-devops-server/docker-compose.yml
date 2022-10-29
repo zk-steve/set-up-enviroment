@@ -1,11 +1,24 @@
 version: "3"
 services:
+  # ha-proxy:
+  #   image: haproxy:2.5-alpine
+  #   # network_mode: host
+  #   volumes:
+  #     - ./ha.conf:/ha.conf:ro
+  #   ports:
+  #     - 80:80
+  #   command:
+  #     - -f
+  #     - /ha.conf
+  #   # sysctls:
+  #   #   - net.ipv4.ip_unprivileged_port_start=0
   azure-tunnel:
     image: kroniak/ssh-client
+    network_mode: host
     restart: "always"
     command:
       - /bin/bash
       - -c
       - |
-        ssh -oStrictHostKeyChecking=no -p 22222 -R 8080:172.16.10.49:80 uetbc.xyz
+        ssh -oStrictHostKeyChecking=no -p 22222 -R azure:80:10.10.10.9:80 10.10.10.11 auto-close=true
  
