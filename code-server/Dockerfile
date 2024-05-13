@@ -1,7 +1,13 @@
 FROM ubuntu:22.04
 
 RUN apt update && \
-    apt install -y git wget sudo openssh-server zsh curl nano build-essential libssl-dev pkg-config protobuf-compiler libclang1 clang && \
+    apt install -y git wget sudo openssh-server zsh curl nano build-essential libssl-dev pkg-config protobuf-compiler libclang1 clang \
+       cmake \
+        libpq-dev \
+        libdw-dev \
+        binutils \
+        lld \
+        libudev-dev && \
     rm -rf /var/lib/apt/lists/*
 
 # Creating the user and usergroup
