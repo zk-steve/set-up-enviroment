@@ -1,48 +1,43 @@
-version: '3.7'
+volumes:
+  etc_wireguard:
 
 services:
-#  letsencrypt:
-#    image: adferrand/dnsrobocert:latest
-#    container_name: letsencrypt-dns
-#    volumes:
-#      - /var/run/docker.sock:/var/run/docker.sock
-#      - ./letsencrypt:/etc/letsencrypt
-#      - ./le-config.yml:/etc/dnsrobocert/config.yml
-#    restart: always
-  sish:
-    image: sonntuet1997/sish:latest
-    container_name: sish
-#    depends_on:
-#      - letsencrypt
+  wg-easy:
+    environment:
+      # Change Language:
+      # (Supports: en, ua, ru, tr, no, pl, fr, de, ca, es, ko, vi, nl, is, pt, chs, cht, it, th, hi)
+      - LANG=en
+      # ⚠️ Required:
+      # Change this to your host's public address
+      - WG_HOST=vpn.thanhtunguet.info
+      - WG_PERSISTENT_KEEPALIVE=25
+      - PORT=61821
+      - WG_PORT=61820
+      - UI_TRAFFIC_STATS=true
+      - UI_CHART_TYPE=1 # (0 Charts disabled, 1 # Line chart, 2 # Area chart, 3 # Bar chart)
+      - PASSWORD=roooot
+      - WG_DEFAULT_ADDRESS=192.168.100.x
+      # Optional:
+      # - WG_DEFAULT_DNS=1.1.1.1
+      # - WG_MTU=1420
+      # - WG_ALLOWED_IPS=192.168.15.0/24, 10.0.1.0/24
+      # - WG_PERSISTENT_KEEPALIVE=25
+      # - WG_PRE_UP=echo "Pre Up" > /etc/wireguard/pre-up.txt
+      # - WG_POST_UP=echo "Post Up" > /etc/wireguard/post-up.txt
+      # - WG_PRE_DOWN=echo "Pre Down" > /etc/wireguard/pre-down.txt
+      # - WG_POST_DOWN=echo "Post Down" > /etc/wireguard/post-down.txt
+
+    image: ghcr.io/wg-easy/wg-easy
+    container_name: wg-easy
     volumes:
-#      - ./letsencrypt:/etc/letsencrypt
-      - ./pubkeys:/pubkeys
-      - ./keys:/keys
-      - ./ssl:/ssl
-    command: |
-      --ssh-address=:22222
-      --http-address=:80
-      --https-address=:443
-      --https=true
-      --https-certificate-directory=/ssl
-      --authentication-keys-directory=/pubkeys
-      --private-key-location=/keys/ssh_key
-      --bind-random-ports=false
-      --tcp-aliases
-      --banned-aliases=api
-      --bind-any-host=false
-      --bind-random-subdomains=false
-      --redirect-root=true
-      --domain=dev.nftal.io
-      --force-requested-aliases
-      --force-requested-ports
-      --ping-client-interval=1m
-      --ping-client-timeout=2m
-      --idle-connection-timeout=30m
-      --force-requested-subdomains
-      --https-ondemand-certificate=true
-      --https-ondemand-certificate-accept-terms=true
-      --port-bind-range=0,25,1024-65535
-      --https-ondemand-certificate-email=sonntuet1997@gmail.com
-    network_mode: host
-    restart: always
+      - etc_wireguard:/etc/wireguard
+    ports:
+      - "61820:61820/udp"
+      - "61821:61821/tcp"
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.src_valid_mark=1

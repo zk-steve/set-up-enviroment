@@ -1,0 +1,48 @@
+services:
+  openvpn:
+    cap_add:
+      - NET_ADMIN
+    image: kylemanna/openvpn
+    container_name: openvpn
+    restart: always
+    volumes:
+      - ./openvpn-data/conf:/etc/openvpn
+  autossh:
+    image: ansiyeah/docker-autossh
+    container_name: autossh
+    restart: always
+    command: "autossh -M 0 -o StrictHostKeyChecking=no -o ServerAliveInterval=5 -o ServerAliveCountMax=1 -t -4 -i /id_rsa -NR *:61820:openvpn:1194 -p 20022 sonnt@vpn.thanhtunguet.info"
+    volumes:
+     - ./id_rsa:/id_rsa
+    dns:
+     - 8.8.8.8
+     - 1.1.1.1
+#   openvpn-tunnel:
+#     build:
+#       context: .
+#     restart: "always"
+# #    healthcheck:
+# #      test: curl -m 20 -sSf http://vpn.thanhtunguet.info:61820  > /dev/null 2>&1 || { [ $? -eq 52 ] && exit 0 || kill 1; }
+# #      interval: 1m
+# #      timeout: 30s
+#     user: root
+#     entrypoint: ["/usr/bin/ssh"]
+#     command:
+#       - -i
+#       - /id_rsa
+#       - -o StrictHostKeyChecking=no
+#       - -o ExitOnForwardFailure=yes
+#       - -o ServerAliveInterval=10
+#       - -o ServerAliveCountMax=3
+#       - -p 20022
+#       - -N
+#       - -R \*:61820:openvpn:1194
+#       - sonnt@vpn.thanhtunguet.info
+#     volumes:
+#       - ./id_rsa:/id_rsa
+#apk add inetutils-telnet
+#apk add curl
+#tedá
+#  curl http://vpn.thanhtunguet.info:61820
+#telnet vpn.thanhtunguet.info 61820
+#  curl -sSf http://vpn.thanhtunguet.info:61820  > /dev/null 2>&1 || { [ $? -eq 52 ] && exit 0 || exit 1; }
