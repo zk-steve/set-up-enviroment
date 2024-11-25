@@ -1,0 +1,3 @@
+DOCKER_HOST=tcp://172.17.0.1:2375
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/local/go/bin:/home/ubuntu/.local/bin:/home/ubuntu/.cargo/bin"
+RUST_LOG=info
