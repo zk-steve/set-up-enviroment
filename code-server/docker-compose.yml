@@ -2,6 +2,14 @@ version: "3"
 networks:
   dev:
 services:
+#  redis:
+#    image: redis
+#    restart: "always"
+#    command: [ "redis-server", "--appendonly", "no", "--maxmemory", "20gb", "--maxmemory-policy", "allkeys-lru" ]
+#    volumes:
+#      - redis-data:/dataCopy
+#    networks:
+#      - dev
   son_server:
     build:
       context: .
@@ -11,13 +19,127 @@ services:
       - dev
     ports:
       - "2222:22"
-#    command:
-#      - "-c"
-#      - "sleep infinity"
-    # ports:
-      # - 30000:3000
     environment:
-       - DOCKER_HOST="tcp://172.18.0.1:2375"
-      # - SRC_ROOT=/home/admin-1/workspace/
+      - DOCKER_HOST="tcp://172.17.0.1:2375"
     volumes:
-      - ~/son:/home/workspace:cached
+      - ~/son:/home/ubuntu/code:cached
+      - ./aptos-config:/aptos-config:ro
+      - son:/home/ubuntu/.ssh
+
+  son_ngrok:
+    image: ngrok/ngrok:latest
+    restart: "always"
+    networks:
+      - dev
+    environment:
+      - NGROK_AUTHTOKEN=1h8Tqixdwr3cYc8TMCQy83X6IbK_72f8AMirK5gktATE39RRL
+    command:
+      - tcp
+      - son_server:22
+  duoc_server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: "always"
+    networks:
+      - dev
+    ports:
+      - "2223:22"
+    environment:
+      - DOCKER_HOST="tcp://172.17.0.1:2375"
+    volumes:
+      - ./aptos-config:/aptos-config:ro
+      - ~/duoc:/home/ubuntu/code:cached
+      - duoc:/home/ubuntu/.ssh
+  duoc_ngrok:
+    image: ngrok/ngrok:latest
+    restart: "always"
+    networks:
+      - dev
+    environment:
+      - NGROK_AUTHTOKEN=2hS5E78g8ElFUuVgX2pqhMy0kTu_aDkMWZYg76KRxrEFsca6
+    command:
+      - tcp
+      - duoc_server:22
+  duy_server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: "always"
+    networks:
+      - dev
+    ports:
+      - "2226:22"
+    environment:
+      - DOCKER_HOST="tcp://172.17.0.1:2375"
+    volumes:
+      - ~/duy:/home/ubuntu/code:cached
+      - ./aptos-config:/aptos-config:ro
+      - duy:/home/ubuntu/.ssh
+  duy_ngrok:
+    image: ngrok/ngrok:latest
+    restart: "always"
+    networks:
+      - dev
+    environment:
+      - NGROK_AUTHTOKEN=2iPhgtFDWJBCJqVCs13CrPL5akZ_3pUjZd8iHErq8c4ooTtg6
+    command:
+      - tcp
+      - duy_server:22
+  duc_server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: "always"
+    networks:
+      - dev
+    ports:
+      - "2227:22"
+    environment:
+      - DOCKER_HOST="tcp://172.17.0.1:2375"
+    volumes:
+      - ~/duc:/home/ubuntu/code:cached
+      - ./aptos-config:/aptos-config:ro
+      - duc:/home/ubuntu/.ssh
+  duc_ngrok:
+    image: ngrok/ngrok:latest
+    restart: "always"
+    networks:
+      - dev
+    environment:
+      - NGROK_AUTHTOKEN=2kbhdlQAWwA9g0BkEYEpHoZxZ4b_31ZcEroh4VJA3ZZz8jUxs
+    command:
+      - tcp
+      - duc_server:22
+  dung_server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: "always"
+    networks:
+      - dev
+    ports:
+      - "2228:22"
+    environment:
+      - DOCKER_HOST="tcp://172.17.0.1:2375"
+    volumes:
+      - ~/docker/dung:/home/ubuntu/code:cached
+      - ./aptos-config:/aptos-config:ro
+      - dung:/home/ubuntu/.ssh
+#  dung_ngrok:
+#    image: ngrok/ngrok:latest
+#    restart: "always"
+#    networks:
+#      - dev
+#    environment:
+#      - NGROK_AUTHTOKEN=2iPhgtFDWJBCJqVCs13CrPL5akZ_3pUjZd8iHErq8c4ooTtg6
+#    command:
+#      - tcp
+#      - dung_server:22
+volumes:
+  son:
+  duy:
+  duoc:
+  duc:
+  dung:
+#  redis-data:
